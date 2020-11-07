@@ -3,20 +3,28 @@ mod events;
 #[path="weather.rs"]
 mod weather;
 
+mod lib;
+
+use lib::Forecast;
+
 use std::thread;
 
 fn main() {
     println!("Hello, world!");
-    // let weather_thread =  thread::Builder::new()
-    //     .name(String::from("weather thread"))
-    //     .spawn(weather::weather()).expect("weather thread failed to spawn");
 
-    let events_thread = thread::Builder::new()
+    // let events_thread = thread::Builder::new()
+    //     .name(String::from("Event Thread"))
+    //     .spawn(||{events::events()}).expect("Even thread failed to spawn");
+    //
+    let weather_thread = thread::Builder::new()
         .name(String::from("Event Thread"))
-        .spawn(events::events()).expect("Even thread failed to spawn");
+        .spawn(||{weather::forecast()}).expect("Even thread failed to spawn");
 
-  //  weather_thread.join().expect("failed to join weather thread");
+    let forecast = weather_thread.join().unwrap();
 
-    events_thread.join().expect("failed to join event thread");
+    println!("Weather {:?}", forecast.weather.details.description);
+
+  //  events_thread.join().expect("failed to join event thread");
+
 
 }
