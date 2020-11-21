@@ -7,13 +7,11 @@ use lib::Events;
 
 mod lib;
 
+pub fn events( api: String ) -> Events{
 
-
-pub fn events() -> Events{
-    let predict_secret = env::var("PREDICT_SECRET").unwrap();
     let client = reqwest::blocking::Client::new();
-    let mut res = client.get("https://api.predicthq.com/v1/events?location_around.origin=53%2C-6")
-        .bearer_auth(predict_secret)
+    let mut res = client.get("https://api.predicthq.com/v1/events?location_around.origin=51.507%2C.127")
+        .bearer_auth(api)
         .send()
         .unwrap()
         .json::<Events>()
