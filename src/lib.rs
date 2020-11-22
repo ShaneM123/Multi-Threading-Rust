@@ -9,6 +9,7 @@ pub struct Forecast {
     pub weather: Weather,
     pub base: String,
     pub main: Temps,
+    // flatten the rest
     pub visibility: i32,
     pub wind: Wind,
     pub clouds: Clouds,
