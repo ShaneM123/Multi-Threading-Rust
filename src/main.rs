@@ -19,13 +19,13 @@ fn main()-> io::Result<()> {
     //https://docs.rs/envfile/0.2.1/envfile/
     let mut envfile = EnvFile::new(&Path::new(".env"))?;
 
-    let weather_api_secret = envfile.get("APP_ID").expect("failed to unwrap APP_ID").to_string();
-    let event_api_secret = envfile.get("PREDICT_SECRET").expect("failed to unwrap PREDICT_SECRET").to_string();
-
+    let weather_api_secret = envfile.get("APP_ID").expect("failed to unwrap APP_ID").to_owned();
+    let event_api_secret = envfile.get("PREDICT_SECRET").expect("failed to unwrap PREDICT_SECRET").to_owned();
+    println!("24");
     let events_thread = thread::Builder::new()
         .name(String::from("Event Thread"))
         .spawn(||{events::events(event_api_secret)}).expect("Even thread failed to spawn");
-
+    println!("28");
     let weather_thread = thread::Builder::new()
         .name(String::from("Event Thread"))
         .spawn(||{weather::forecast(weather_api_secret)}).expect("Even thread failed to spawn");
