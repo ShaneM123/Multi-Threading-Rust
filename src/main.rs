@@ -5,8 +5,6 @@ mod weather;
 
 mod lib;
 
-use lib::Forecast;
-
 use std::thread;
 
 use envfile;
@@ -17,7 +15,7 @@ use std::path::Path;
 
 fn main()-> io::Result<()> {
     //https://docs.rs/envfile/0.2.1/envfile/
-    let mut envfile = EnvFile::new(&Path::new(".env"))?;
+    let envfile = EnvFile::new(&Path::new(".env"))?;
 
     let weather_api_secret = envfile.get("APP_ID").expect("failed to unwrap APP_ID").to_owned();
     let event_api_secret = envfile.get("PREDICT_SECRET").expect("failed to unwrap PREDICT_SECRET").to_owned();
@@ -33,8 +31,8 @@ fn main()-> io::Result<()> {
     let forecast = weather_thread.join().unwrap();
     println!("Weather {:?}", forecast.weather.details.description);
 
-
     let events = events_thread.join().expect("failed to join event thread");
+
     let all_events:Vec<&String> = events.results.iter().map(|x| { &x.title }).collect();
     let cloudy_events:Vec<&&String> = all_events.iter().filter(|x| !x.contains("outdoor") && x.len() < 25 ).collect();
 
